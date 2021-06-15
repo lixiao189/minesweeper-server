@@ -1,9 +1,9 @@
 /**
- * 这个包是游戏后端引擎包
+ * 这个包是游戏网络引擎包
  * @author Node Sans
  * */
 
-package team.minesweeper.service.engine;
+package team.minesweeper.service.network;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -20,8 +20,8 @@ public class Engine {
 
 	public Engine(int port) {
 		try {
-			this.handlers = new ConcurrentHashMap<>();
-			this.listener = new ServerSocket(port);
+			this.handlers = new ConcurrentHashMap<>(); // 线程安全的 map
+			this.listener = new ServerSocket(port); // 监听服务
 			this.executorService = Executors.newCachedThreadPool(); // 自动增长线程数的线程池
 		} catch (IOException e) {
 			System.out.println("Engine starting error");
@@ -35,7 +35,7 @@ public class Engine {
 			while (true) {
 				try {
 					Socket conn = this.listener.accept();
-					this.executorService.execute(new ClientReceiver(conn));
+					this.executorService.execute(new ClientReceiver(conn, this.handlers));
 				} catch (IOException e) {
 					break;
 				}

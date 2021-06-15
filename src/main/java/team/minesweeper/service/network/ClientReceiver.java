@@ -1,18 +1,21 @@
 /**
  * 处理客户端请求
  * */
-package team.minesweeper.service.engine;
+package team.minesweeper.service.network;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
 
 class ClientReceiver implements Runnable {
 	private Socket conn;
+	private Map<Integer, Handler> handlers;
 
-	public ClientReceiver(Socket conn) {
+	public ClientReceiver(Socket conn, Map<Integer, Handler> handlers) {
 		this.conn = conn;
+		this.handlers = handlers;
 	}
 
 	@Override
@@ -34,11 +37,12 @@ class ClientReceiver implements Runnable {
 				inputStream.read(buffer);
 
 				for (int i = 0; i < buffer.length; i++) {
-					if (buffer[i] == 3 && !shouldReadOperationCode) // 防止用户输入数据中混入 03
+					boolean shouldRead = shouldReadOperationCode || shouldReadIntegerArg || shouldReadStringArg;
+					if (buffer[i] == 3 && !shouldRead) 
 						shouldReadOperationCode = true;
-					else if (buffer[i] == 1 && !shouldReadIntegerArg) // 防止用户输入数据中混入 01
+					else if (buffer[i] == 1 && !shouldRead) 
 						shouldReadIntegerArg = true;
-					else if (buffer[i] == 2 && !shouldReadStringArg) // 防止用户输入数据中混入 02
+					else if (buffer[i] == 2 && !shouldRead) 
 						shouldReadStringArg = true;
 					else if (buffer[i] == 5) {
 						// 某块数据的读取结束
@@ -58,10 +62,12 @@ class ClientReceiver implements Runnable {
 						}
 					} else if (buffer[i] == 4) { // 一个包的数据处理结束
 						// debug
-						System.out.println(operateCode);
-						System.out.println(integerArgs.toString());
+						System.out.println("The user data");
+						System.out.print(operateCode + " ");
+						System.out.print(integerArgs.toString() + " ");
 						System.out.println(stringArgs.toString());
 						
+						this.handlers.get(Integer.valueOf(operateCode)).handler(this.conn, stringArgs, integerArgs);	
 						integerArgs.clear();
 						stringArgs.clear();
 						operateCode = 0;
