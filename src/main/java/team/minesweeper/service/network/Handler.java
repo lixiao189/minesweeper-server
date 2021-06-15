@@ -4,9 +4,9 @@
 
 package team.minesweeper.service.network;
 
-import java.net.Socket;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public interface Handler {
-	public void handler(Socket conn, ArrayList<String> sargs, ArrayList<Integer> iargs);
+	public void execute(OutputStream outputStream, ArrayList<String> sargs, ArrayList<Integer> iargs);
 }
