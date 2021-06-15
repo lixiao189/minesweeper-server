@@ -8,20 +8,23 @@ package team.minesweeper.service.engine;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import team.minesweeper.service.engine.handlers.ClientHandler;
 
 public class Engine {
 	private ServerSocket listener; // socket 监听器
 	private ExecutorService executorService; // 后端执行器（其实就是线程池）
+	private Map<Integer, Handler> handlers;
 
 	public Engine(int port) {
 		try {
+			this.handlers = new ConcurrentHashMap<>();
 			this.listener = new ServerSocket(port);
 			this.executorService = Executors.newCachedThreadPool(); // 自动增长线程数的线程池
 		} catch (IOException e) {
+			System.out.println("Engine starting error");
 			e.printStackTrace();
 		}
 	}
@@ -32,9 +35,9 @@ public class Engine {
 			while (true) {
 				try {
 					Socket conn = this.listener.accept();
-					this.executorService.execute(new ClientHandler(conn));
+					this.executorService.execute(new ClientReceiver(conn));
 				} catch (IOException e) {
-					e.printStackTrace();
+					break;
 				}
 			}
 		});
@@ -46,6 +49,7 @@ public class Engine {
 				this.listener.close();
 				System.out.println("\nThe programme is stopped");
 			} catch (IOException e) {
+				System.out.println("Qutting error");
 				e.printStackTrace();
 			}
 		}));
@@ -54,7 +58,7 @@ public class Engine {
 	/**
 	 * 向整个系统绑定操作码和操作函数
 	 */
-	public void addHandler(int operate) {
-		// TODO 这个地方记得添加上 handler 接口
+	public void addHandler(int operate, Handler handler) {
+		this.handlers.put(Integer.valueOf(operate), handler);
 	}
 }
