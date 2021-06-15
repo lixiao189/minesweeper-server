@@ -92,8 +92,7 @@ class ClientReceiver implements Runnable {
 					this.service.execute(() -> {
 						try {
 							handler.execute(this.conn.getOutputStream(), tmpStringArgs, tmpIntegerArgs);
-						} catch (IOException e) {
-							System.out.println("Connection output stream error");
+						} catch (IOException e) { System.out.println("Connection output stream error");
 						}
 					});
 					integerArgs.clear();
