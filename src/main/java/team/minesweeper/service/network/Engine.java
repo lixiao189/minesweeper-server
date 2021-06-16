@@ -18,19 +18,21 @@ public class Engine {
 	private ExecutorService executorService; // 后端执行器（其实就是线程池）
 	private Map<Integer, Handler> handlers;
 
-	public Engine(int port) {
-		try {
-			this.handlers = new HashMap<>(); // 线程安全的 map
-			this.listener = new ServerSocket(port); // 监听服务
-			this.executorService = Executors.newCachedThreadPool(); // 自动增长线程数的线程池
-		} catch (IOException e) {
-			System.out.println("Engine starting error");
-			e.printStackTrace();
-		}
+	/**
+	 * @param port 网络引擎的端口
+	 */
+	public Engine() {
+		this.handlers = new HashMap<>(); // 线程安全的 map
+		this.executorService = Executors.newCachedThreadPool(); // 自动增长线程数的线程池
 	}
 
-	public void startListen() {
+	public void startListen(int port) {
 		// 监听用户的连接
+		try {
+			this.listener = new ServerSocket(port); // 监听服务
+		} catch (IOException e1) {
+			System.out.println("Socket starting error");	
+		}
 		this.executorService.execute(() -> {
 			while (true) {
 				try {

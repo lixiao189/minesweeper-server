@@ -3,7 +3,7 @@
  * @author Node Sans
  * */
 
-package team.minesweeper.service.game;
+package team.minesweeper.service.game.models;
 
 public class Weapon {
 	private String name;

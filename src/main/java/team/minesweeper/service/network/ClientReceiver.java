@@ -1,10 +1,14 @@
 /**
  * 处理客户端请求
  * */
+
+// TODO 解决空 handler 的问题
+
 package team.minesweeper.service.network;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -26,6 +30,7 @@ class ClientReceiver implements Runnable {
 	public void run() {
 		byte[] buffer = new byte[30];
 		InputStream inputStream = null;
+		OutputStream outputStream = null;
 		boolean shouldReadOperationCode = false;
 		boolean shouldReadIntegerArg = false;
 		boolean shouldReadStringArg = false;
@@ -41,10 +46,11 @@ class ClientReceiver implements Runnable {
 
 			try {
 				inputStream = this.conn.getInputStream();
+				outputStream = this.conn.getOutputStream();
+				outputStream.write(0); // 发送没用的测试数据 判断是否继续联通
 				inputStream.read(buffer);
 			} catch (IOException e) {
-				System.out.println("Socket IO stream error");
-				e.printStackTrace();
+				System.out.println("Socket connection error");
 				break;
 			}
 
@@ -92,7 +98,8 @@ class ClientReceiver implements Runnable {
 					this.service.execute(() -> {
 						try {
 							handler.execute(this.conn.getOutputStream(), tmpStringArgs, tmpIntegerArgs);
-						} catch (IOException e) { System.out.println("Connection output stream error");
+						} catch (IOException e) {
+							System.out.println("Connection output stream error");
 						}
 					});
 					integerArgs.clear();
