@@ -27,6 +27,7 @@ public class SyncData implements Handler {
 
 		OutputStream targetOutputStream = targetPlayer.getOutputStream();
 		try {
+			sourcePlayer.getLock().setDataNum(0); // 清空发包数量记录
 			for (int i = 0; i < 6; i++) 
 				targetOutputStream.write(new byte[] { 0x03, (byte) iargs.get(i).intValue(), 0x05 });
 			targetOutputStream.write(0x04);
