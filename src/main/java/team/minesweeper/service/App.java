@@ -11,5 +11,13 @@ public class App {
 		Game game = new Game();
 		game.addHandlers();	
 		game.gameStart();
+
+		// package test
+		if (args.length > 0) {
+			if (args[0].equals("--test")) {
+				System.out.println("package test ok!");
+				System.exit(0);
+			}
+		}
 	}
 }
