@@ -30,29 +30,29 @@ public class AcceptInvitation implements Handler {
 				// 互相成为对手
 				player1.setCompetitor(player2);
 				player2.setCompetitor(player1);
-			
+
 				// 给两个人上同一个联机锁
 				WaitLock lock = new WaitLock();
 				player1.setLock(lock);
-				player2.setLock(lock); 
+				player2.setLock(lock);
 
 				try {
-					player1.getOutputStream().write(new byte[] { 0x03, 0x01, 0x04 });
+					player1.getOutputStream().write(new byte[] { 0x02, 0x03, 0x01, 0x04 });
 				} catch (IOException e) {
 					System.out.println("The player1 is offline now");
 					try {
-						outputStream.write(new byte[] { 0x03, 0x00, 0x04 });
+						outputStream.write(new byte[] { 0x02, 0x03, 0x00, 0x04 });
 					} catch (IOException e1) {
 						System.out.println("The player2 is offline now");
 					}
 				}
 			} else { // 没有接受邀请
 				try {
-					player1.getOutputStream().write(new byte[] { 0x03, 0x02, 0x04 });
+					player1.getOutputStream().write(new byte[] { 0x02, 0x03, 0x02, 0x04 });
 				} catch (IOException e) {
 					System.out.println("The player1 is offline now");
 					try {
-						outputStream.write(new byte[] { 0x03, 0x00, 0x04 });
+						outputStream.write(new byte[] { 0x02, 0x03, 0x00, 0x04 });
 					} catch (IOException e1) {
 						System.out.println("The player2 is offline now");
 					}
