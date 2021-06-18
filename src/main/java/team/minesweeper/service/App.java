@@ -14,7 +14,7 @@ public class App {
 
 		// package test
 		if (args.length > 0) {
-			if (args[0].equals("-test")) {
+			if (args[0].equals("--test")) {
 				System.out.println("package test ok!");
 				System.exit(0);
 			}
