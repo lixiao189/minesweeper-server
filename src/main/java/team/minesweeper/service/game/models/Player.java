@@ -6,34 +6,46 @@
 package team.minesweeper.service.game.models;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
 
 public class Player {
 	private String name; // 用户名
 	private OutputStream outputStream; // 该用户 socket 输出字节流
-	private boolean status; // 游戏状态
-	private Player competitor; // 对手
-	private int score; // 当前用户的分数
-	private double blood; // 当前用户的血量
-	private ArrayList<Weapon> weapons; // 用户持有的武器
+	private volatile byte status; // 游戏状态 status = 1 在游戏中/ 0 空闲 / 2 邀请别人中
+	private volatile Player competitor; // 对手
+	private WaitLock lock;	
 
-	@Override
-	public String toString() {
-		return "Player [blood=" + blood + ", competitor=" + competitor + ", name=" + name + ", score=" + score
-				+ ", status=" + status + ", weapons=" + weapons + "]";
+	public WaitLock getLock() {
+		return lock;
 	}
 
-	public boolean isStatus() {
+	public void setLock(WaitLock lock) {
+		this.lock = lock;
+	}
+
+	public Player getCompetitor() {
+		return competitor;
+	} 
+
+	public void setCompetitor(Player competitor) {
+		this.competitor = competitor;
+	}
+
+	public byte getStatus() {
 		return status;
+	}
+
+	public void setStatus(byte status) {
+		this.status = status;
+	}
+
+	public OutputStream getOutputStream() {
+		return outputStream;
 	}
 
 	public Player(String name, OutputStream outputStream) {
 		this.name = name;
-		this.status = false;
+		this.status = 0;
 		this.competitor = null;
-		this.score = 0;
-		this.blood = 0.0;
 		this.outputStream = outputStream;
-		this.weapons = null;
 	}
 }

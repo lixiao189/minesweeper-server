@@ -50,7 +50,6 @@ class ClientReceiver implements Runnable {
 				outputStream.write(0); // 发送没用的测试数据 判断是否继续联通
 				inputStream.read(buffer);
 			} catch (IOException e) {
-				System.out.println("Socket connection error");
 				break;
 			}
 

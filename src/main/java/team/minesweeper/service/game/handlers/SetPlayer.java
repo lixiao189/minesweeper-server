@@ -7,10 +7,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import team.minesweeper.service.game.models.Player;
 import team.minesweeper.service.network.Handler;
 
-public class SetName implements Handler {
+public class SetPlayer implements Handler {
 	private ConcurrentHashMap<String, Player> players;
 
-	public SetName(ConcurrentHashMap<String, Player> players) {
+	public SetPlayer(ConcurrentHashMap<String, Player> players) {
 		this.players = players;
 	}
 
@@ -19,8 +19,8 @@ public class SetName implements Handler {
 		String name = sargs.get(0); // 玩家的用户名
 		byte result = 0x00;
 		if (this.players.containsKey(name)) {
-			// 注册失败	
-			result = 0x02; 	
+			// 注册失败
+			result = 0x02;
 		} else {
 			// 注册成功
 			result = 0x01;

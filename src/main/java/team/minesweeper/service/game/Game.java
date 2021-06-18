@@ -1,18 +1,21 @@
 package team.minesweeper.service.game;
 
-import java.util.concurrent.ConcurrentHashMap;
 import team.minesweeper.service.Config;
+import team.minesweeper.service.game.containers.PlayerMap;
+import team.minesweeper.service.game.handlers.AcceptInvitation;
+import team.minesweeper.service.game.handlers.GetPlayerList;
+import team.minesweeper.service.game.handlers.InvitePlayer;
+import team.minesweeper.service.game.handlers.SetPlayer;
+import team.minesweeper.service.game.handlers.SyncData;
 import team.minesweeper.service.network.Engine;
-import team.minesweeper.service.game.models.*;
-import team.minesweeper.service.game.handlers.*;
 
 public class Game {
-	private ConcurrentHashMap<String, Player> players;	
-	private Engine engine; // 游戏网络引擎	
-	
+	private PlayerMap players;
+	private Engine engine; // 游戏网络引擎
+
 	public Game() {
 		this.engine = new Engine();
-		this.players = new ConcurrentHashMap<>();	
+		this.players = new PlayerMap();
 	}
 
 	public void gameStart() {
@@ -22,7 +25,10 @@ public class Game {
 	}
 
 	public void addHandlers() {
-		engine.addHandler(0x0A, new SetName(this.players));		
+		engine.addHandler(0x0A, new SetPlayer(this.players));
 		engine.addHandler(0x0B, new GetPlayerList(this.players));
+		engine.addHandler(0x0C, new InvitePlayer(this.players));
+		engine.addHandler(0x0D, new AcceptInvitation(this.players));	
+		engine.addHandler(0x0E, new SyncData(this.players));
 	}
 }

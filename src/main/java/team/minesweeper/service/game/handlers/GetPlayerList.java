@@ -17,18 +17,18 @@ public class GetPlayerList implements Handler {
 
 	@Override
 	public void execute(OutputStream outputStream, ArrayList<String> sargs, ArrayList<Integer> iargs) {
-		boolean status;
+		byte status;
 		ArrayList<Byte> result = new ArrayList<>();
 		for (String name : this.players.keySet()) {
-			status = this.players.get(name).isStatus();
+			status = this.players.get(name).getStatus();
 			result.add((byte) 0x03);
 			for (int j = 0; j < name.length(); j++)
 				result.add((byte) name.charAt(j));
 			result.add((byte) 0x05);
 			result.add((byte) 0x03);
-			if (status) // 如果这个人在游戏中
+			if (status != 0) // 如果这个人非空闲
 				result.add((byte) 0x01);
-			else // 如果这个人不再游戏中
+			else // 如果这个人空闲
 				result.add((byte) 0x00);
 			result.add((byte) 0x05);
 		}
