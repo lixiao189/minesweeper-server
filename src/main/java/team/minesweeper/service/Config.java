@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class Config extends Properties {
-	String loadPath = "/config.properties";
+	String loadPath = "./config.properties";
 
 	public Config() {
 		try {
