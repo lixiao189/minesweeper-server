@@ -1,4 +1,4 @@
-# minesweeper-backend
+# minesweeper-server
 [![Java CI with Maven](https://github.com/I-Info/minesweeper-server/actions/workflows/maven.yml/badge.svg)](https://github.com/I-Info/minesweeper-server/actions/workflows/maven.yml)      
 在线扫雷大战的后端, 本项目采用 maven 构建
 
