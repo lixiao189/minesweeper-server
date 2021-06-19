@@ -3,15 +3,13 @@ package team.minesweeper.service.game.handlers;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
-
-import team.minesweeper.service.game.models.Player;
+import team.minesweeper.service.game.containers.PlayerMap;
 import team.minesweeper.service.network.Handler;
 
 public class GetPlayerList implements Handler {
-	private ConcurrentHashMap<String, Player> players;
+	private PlayerMap players;
 
-	public GetPlayerList(ConcurrentHashMap<String, Player> players) {
+	public GetPlayerList(PlayerMap players) {
 		this.players = players;
 	}
 
