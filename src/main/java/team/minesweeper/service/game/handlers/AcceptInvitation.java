@@ -49,6 +49,7 @@ public class AcceptInvitation implements Handler {
 			} else { // 没有接受邀请
 				try {
 					player1.getOutputStream().write(new byte[] { 0x08, 0x03, 0x02, 0x04 });
+					player1.setStatus((byte) 0); // 将 player1 还原成空闲状态
 				} catch (IOException e) {
 					System.out.println("The player1 is offline now");
 					try {

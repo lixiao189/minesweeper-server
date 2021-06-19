@@ -36,10 +36,16 @@ public class InvitePlayer implements Handler {
 				outputStream.write(new byte[] { 0x07, 0x03, 0x01, 0x04 });
 			} else {
 				// 可以邀请
-				player2.getOutputStream().write(new byte[] { 0x07, 0x03 });
 				byte[] nameData = playerName1.getBytes("UTF-8");
-				player2.getOutputStream().write(nameData);
-				player2.getOutputStream().write(0x04);
+				byte[] result = new byte[2 + nameData.length + 1];
+				
+				result[0] = 0x07;
+				result[1] = 0x03;
+				for (int i = 0; i < nameData.length; i++) {
+					result[2 + i] = nameData[i];
+				}	
+				result[2 + nameData.length] = 0x04;
+				player2.getOutputStream().write(result);
 
 				// 邀请者进入等待邀请的状态
 				player1.setStatus((byte) 2);
