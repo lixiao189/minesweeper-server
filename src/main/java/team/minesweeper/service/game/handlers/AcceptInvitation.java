@@ -37,22 +37,22 @@ public class AcceptInvitation implements Handler {
 				player2.setLock(lock);
 
 				try {
-					player1.getOutputStream().write(new byte[] { 0x02, 0x03, 0x01, 0x04 });
+					player1.getOutputStream().write(new byte[] { 0x08, 0x03, 0x01, 0x04 });
 				} catch (IOException e) {
 					System.out.println("The player1 is offline now");
 					try {
-						outputStream.write(new byte[] { 0x02, 0x03, 0x00, 0x04 });
+						outputStream.write(new byte[] { 0x08, 0x03, 0x00, 0x04 });
 					} catch (IOException e1) {
 						System.out.println("The player2 is offline now");
 					}
 				}
 			} else { // 没有接受邀请
 				try {
-					player1.getOutputStream().write(new byte[] { 0x02, 0x03, 0x02, 0x04 });
+					player1.getOutputStream().write(new byte[] { 0x08, 0x03, 0x02, 0x04 });
 				} catch (IOException e) {
 					System.out.println("The player1 is offline now");
 					try {
-						outputStream.write(new byte[] { 0x02, 0x03, 0x00, 0x04 });
+						outputStream.write(new byte[] { 0x08, 0x03, 0x00, 0x04 });
 					} catch (IOException e1) {
 						System.out.println("The player2 is offline now");
 					}

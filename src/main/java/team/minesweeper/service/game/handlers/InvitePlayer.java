@@ -30,13 +30,13 @@ public class InvitePlayer implements Handler {
 		try {
 			if (player2 == null) {
 				// 玩家下线
-				outputStream.write(new byte[] { 0x02, 0x03, 0x02, 0x04 });
+				outputStream.write(new byte[] { 0x07, 0x03, 0x02, 0x04 });
 			} else if (player2.getStatus() == 1 || player2.getStatus() == 2) {
 				// 玩家在游戏中或者在邀请别人中
-				outputStream.write(new byte[] { 0x02, 0x03, 0x01, 0x04 });
+				outputStream.write(new byte[] { 0x07, 0x03, 0x01, 0x04 });
 			} else {
 				// 可以邀请
-				player2.getOutputStream().write(new byte[] { 0x02, 0x03 });
+				player2.getOutputStream().write(new byte[] { 0x07, 0x03 });
 				byte[] nameData = playerName1.getBytes("UTF-8");
 				player2.getOutputStream().write(nameData);
 				player2.getOutputStream().write(0x04);

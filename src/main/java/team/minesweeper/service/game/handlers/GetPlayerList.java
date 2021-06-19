@@ -19,6 +19,7 @@ public class GetPlayerList implements Handler {
 	public void execute(OutputStream outputStream, ArrayList<String> sargs, ArrayList<Integer> iargs) {
 		byte status;
 		ArrayList<Byte> result = new ArrayList<>();
+		result.add((byte) 0x06);
 		for (String name : this.players.keySet()) {
 			status = this.players.get(name).getStatus();
 			result.add((byte) 0x03);
